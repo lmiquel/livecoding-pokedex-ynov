@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 
 const emit = defineEmits(['randomPokemon'])
 
-const getRandomPokemonNumber = () => getRandomInt(1025)
+const getRandomPokemonNumber = () => getRandomInt(1024) + 1
 const getRandomPokemon = () =>
   fetch(`https://pokeapi.co/api/v2/pokemon/${getRandomPokemonNumber()}`)
     .then((res) => res.json())

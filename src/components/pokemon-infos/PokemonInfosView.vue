@@ -2,11 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import PokemonCard from '../commons/PokemonCard.vue'
-import {
-  getOneFormattedPokemonById,
-  getPokemonDetailledInfosById
-} from '@/api-calls/get-one-pokemon-by-id'
+import { getOnePokemonById } from '@/api-calls/get-one-pokemon-by-id'
 import PokemonDetailledInfosCard from '../commons/PokemonDetailledInfosCard.vue'
+import {
+  getOnePokemonFormattedBasicData,
+  getOnePokemonFormattedDetailledData
+} from '@/api-calls/helpers/format-pokemon-data-for-display'
 
 const route = useRoute()
 
@@ -25,15 +26,17 @@ const pokemonDetailledInfos = ref({
   stats: []
 })
 
-const setPokemonCardInfos = async (pokemonId) =>
-  (pokemonCardInfos.value = await getOneFormattedPokemonById(pokemonId))
-const setPokemonDetailledInfos = async (pokemonId) =>
-  (pokemonDetailledInfos.value = await getPokemonDetailledInfosById(pokemonId))
+const setPokemonCardInfos = async (pokemon) =>
+  (pokemonCardInfos.value = getOnePokemonFormattedBasicData(pokemon))
+const setPokemonDetailledInfos = async (pokemon) =>
+  (pokemonDetailledInfos.value = getOnePokemonFormattedDetailledData(pokemon))
 
 onMounted(async () => {
   const pokemonId = route.params.id
-  await setPokemonCardInfos(pokemonId)
-  await setPokemonDetailledInfos(pokemonId)
+  const pokemon = await getOnePokemonById(pokemonId)
+
+  await setPokemonCardInfos(pokemon)
+  await setPokemonDetailledInfos(pokemon)
 })
 </script>
 

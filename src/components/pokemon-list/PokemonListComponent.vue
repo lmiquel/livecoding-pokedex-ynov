@@ -8,10 +8,11 @@ import { incrementNumberWithinRange } from '@/helpers/increment-number-within-ra
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const url = '/list?offset='
 
 const offset = ref(parseInt(route.query.offset))
-const previousLink = ref(`/list?offset=${decrementNumberWithinRange(offset.value, 10, 0)}`)
-const nextLink = ref(`/list?offset=${incrementNumberWithinRange(offset.value, 10, 1020)}`)
+const previousLink = ref(`${url}${decrementNumberWithinRange(offset.value, 10, 0)}`)
+const nextLink = ref(`${url}${incrementNumberWithinRange(offset.value, 10, 1020)}`)
 
 const pokemonList = ref([])
 const showLinkCards = true
@@ -23,9 +24,9 @@ const getPokemonList = async (offset) => {
 }
 
 const setPreviousLink = (offset) =>
-  (previousLink.value = `/list?offset=${decrementNumberWithinRange(offset, 10, 0)}`)
+  (previousLink.value = `${url}${decrementNumberWithinRange(offset, 10, 0)}`)
 const setNextLink = (offset) =>
-  (nextLink.value = `/list?offset=${incrementNumberWithinRange(offset, 10, 1020)}`)
+  (nextLink.value = `${url}${incrementNumberWithinRange(offset, 10, 1020)}`)
 
 watch(
   () => route.query.offset,

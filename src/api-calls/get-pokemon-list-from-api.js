@@ -1,18 +1,16 @@
+import { getOnePokemonFormattedBasicData } from './helpers/format-pokemon-data-for-display'
+
 export const getPokemonListFromApi = async (offset = 0) => {
-  const pokemons = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=10`)
-  const formattedPokemons = await pokemons.json()
+  const pokemonsRaw = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=10`)
+  const pokemons = await pokemonsRaw.json()
 
   const pokemonList = []
-  for await (const pokemon of formattedPokemons.results) {
-    const singlePokemonRes = await fetch(pokemon.url)
-    const formattedSinglePokemon = await singlePokemonRes.json()
+  for await (const pokemon of pokemons.results) {
+    const singlePokemonRaw = await fetch(pokemon.url)
+    const singlePokemon = await singlePokemonRaw.json()
 
-    pokemonList.push({
-      id: formattedSinglePokemon.id,
-      name: formattedSinglePokemon.name,
-      img: formattedSinglePokemon.sprites.front_default,
-      sound: formattedSinglePokemon.cries.legacy
-    })
+    const formattedPokemon = getOnePokemonFormattedBasicData(singlePokemon)
+    pokemonList.push(formattedPokemon)
   }
 
   return pokemonList

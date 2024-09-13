@@ -1,6 +1,7 @@
 # livecoding-pokedex-ynov
 
 This is actually not a livecoding but the app I did to prepare the livecoding
+https://livecoding-pokedex-learning-vuejs.netlify.app/
 
 ## Project Setup
 

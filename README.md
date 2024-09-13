@@ -2,7 +2,7 @@
 
 This is actually not a livecoding but the app I did to prepare the livecoding
 
-# Deployed app
+## Deployed app
 https://livecoding-pokedex-learning-vuejs.netlify.app/
 
 ## Project Setup

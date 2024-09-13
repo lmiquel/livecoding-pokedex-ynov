@@ -1,5 +1,6 @@
 <script setup>
 import { capitalizeFirstLetter } from '@/helpers/capitalize-first-letter'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   pokemon: {
@@ -11,7 +12,15 @@ const props = defineProps({
   showLink: Boolean
 })
 
-const pokemonUrl = `/pokemon/${props.pokemon.id || null}`
+const pokemonUrl = ref(`/pokemon/${props.pokemon.id || null}`)
+
+// for the random pokemon view
+watch(
+  () => props.pokemon.id,
+  (newPokemonId) => {
+    pokemonUrl.value = `/pokemon/${newPokemonId}`
+  }
+)
 </script>
 
 <template>

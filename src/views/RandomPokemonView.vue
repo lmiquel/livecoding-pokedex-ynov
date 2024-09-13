@@ -3,7 +3,5 @@ import RandomPokemonComponent from '@/components/random-pokemon/RandomPokemonCom
 </script>
 
 <template>
-  <main>
-    <RandomPokemonComponent />
-  </main>
+  <RandomPokemonComponent />
 </template>

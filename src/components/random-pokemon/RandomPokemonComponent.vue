@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import ButtonComponent from '@/components/generic-components/ButtonComponent.vue'
 import PokemonCard from '@/components/commons/PokemonCard.vue'
-import { getOnePokemon } from '@/api-calls/get-one-pokemon'
+import { getOnePokemonById } from '@/api-calls/get-one-pokemon-by-id'
 import { getRandomPokemonNumber } from '@/helpers/get-random-pokemon-id'
 
 const pokemon = ref({
@@ -11,28 +11,22 @@ const pokemon = ref({
   sound: ''
 })
 
-const setRandomPokemon = (randomPokemon) => {
-  pokemon.value = randomPokemon
-}
+const setRandomPokemon = (randomPokemon) => (pokemon.value = randomPokemon)
 const getRandomPokemon = async () => {
-  const data = await getOnePokemon(getRandomPokemonNumber())
+  const pkm = await getOnePokemonById(getRandomPokemonNumber())
   setRandomPokemon({
-    name: data.name,
-    img: data.sprites.front_default,
-    sound: data.cries.legacy
+    name: pkm.name,
+    img: pkm.sprites.front_default,
+    sound: pkm.cries.legacy
   })
 }
 
-onMounted(() => {
-  getRandomPokemon()
-})
-
-const textButton = 'CHANGE POKEMON'
+onMounted(() => getRandomPokemon())
 </script>
 
 <template>
   <v-container>
     <PokemonCard :pokemon="pokemon" />
-    <ButtonComponent @clicked="getRandomPokemon" :text="textButton" />
+    <ButtonComponent @clicked="getRandomPokemon" text="CHANGE POKEMON" />
   </v-container>
 </template>

@@ -2,23 +2,23 @@
 import { onMounted, ref } from 'vue'
 import ButtonComponent from '@/components/generic-components/ButtonComponent.vue'
 import PokemonCard from '@/components/commons/PokemonCard.vue'
-import { getOnePokemonById } from '@/api-calls/get-one-pokemon-by-id'
+import { getOneFormattedPokemonById } from '@/api-calls/get-one-pokemon-by-id'
 import { getRandomPokemonNumber } from '@/helpers/get-random-pokemon-id'
 
 const pokemon = ref({
+  id: null,
   name: '',
   img: '',
   sound: ''
 })
+const showLinkCard = true
 
 const setRandomPokemon = (randomPokemon) => (pokemon.value = randomPokemon)
 const getRandomPokemon = async () => {
-  const pkm = await getOnePokemonById(getRandomPokemonNumber())
-  setRandomPokemon({
-    name: pkm.name,
-    img: pkm.sprites.front_default,
-    sound: pkm.cries.legacy
-  })
+  const randomPokemonNumber = getRandomPokemonNumber()
+  const randomPokemon = await getOneFormattedPokemonById(randomPokemonNumber)
+
+  setRandomPokemon(randomPokemon)
 }
 
 onMounted(() => getRandomPokemon())
@@ -26,7 +26,7 @@ onMounted(() => getRandomPokemon())
 
 <template>
   <v-container>
-    <PokemonCard :pokemon="pokemon" />
+    <PokemonCard :pokemon="pokemon" :showLink="showLinkCard" />
     <ButtonComponent @clicked="getRandomPokemon" text="CHANGE POKEMON" />
   </v-container>
 </template>

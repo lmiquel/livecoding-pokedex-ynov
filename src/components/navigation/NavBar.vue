@@ -16,8 +16,10 @@ const links = [
 <template>
   <v-list width="100%" class="navbar">
     <v-list-item v-for="link in links" :key="link.link" class="navbarLinks">
-      <v-icon color="white" :icon="link.icon"></v-icon>
-      <RouterLink color="white" :to="link.link">{{ link.name }}</RouterLink>
+      <RouterLink color="white" :to="link.link">
+        <v-icon color="white" :icon="link.icon" size="small" />
+        {{ link.name }}
+      </RouterLink>
     </v-list-item>
   </v-list>
 </template>
@@ -35,5 +37,9 @@ const links = [
   margin: auto;
   align-items: center;
   justify-content: center;
+}
+
+.iconNavBar {
+  align-items: center;
 }
 </style>

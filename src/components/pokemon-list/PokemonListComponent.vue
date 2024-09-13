@@ -8,6 +8,7 @@ import { incrementNumberWithinRange } from '@/helpers/increment-number-within-ra
 
 const offset = ref(0)
 const pokemonList = ref([])
+const showLinkCards = true
 
 const setPokemonList = (newPokemonList) => (pokemonList.value = newPokemonList)
 const getPokemonList = async (offset) => {
@@ -41,7 +42,7 @@ onMounted(() => getPokemonList(offset.value))
     <v-row align="center" justify="center">
       <v-list theme="dark" lines="one" class="pkmList">
         <v-list-item v-for="pokemon in pokemonList" :key="pokemon.name" class="pkmItemList">
-          <PokemonCard :pokemon="pokemon" />
+          <PokemonCard :pokemon="pokemon" :showLink="showLinkCards" />
         </v-list-item>
       </v-list>
     </v-row>

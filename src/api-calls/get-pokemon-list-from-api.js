@@ -8,6 +8,7 @@ export const getPokemonListFromApi = async (offset = 0) => {
     const formattedSinglePokemon = await singlePokemonRes.json()
 
     pokemonList.push({
+      id: formattedSinglePokemon.id,
       name: formattedSinglePokemon.name,
       img: formattedSinglePokemon.sprites.front_default,
       sound: formattedSinglePokemon.cries.legacy

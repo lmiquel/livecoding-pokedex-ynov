@@ -10,20 +10,18 @@ const router = createRouter({
       component: RandomPokemonView
     },
     {
-      path: '/list',
-      name: 'pokemonList',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/PokemonListView.vue')
-    },
-    {
       path: '/pokemon/:id',
       name: 'pokemonInfos',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/PokemonInfosView.vue')
+    },
+    {
+      path: '/list',
+      name: 'pokemonList',
+      component: () => import('../views/PokemonListView.vue'),
+      props: (route) => ({ query: route.query.offset })
     }
   ]
 })

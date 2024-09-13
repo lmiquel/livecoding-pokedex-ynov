@@ -7,7 +7,7 @@ const links = [
   },
   {
     name: 'Pokemon list',
-    link: '/list',
+    link: '/list?offset=0',
     icon: 'mdi-format-list-bulleted'
   }
 ]

@@ -1,12 +1,18 @@
 <script setup>
 import { getPokemonListFromApi } from '@/api-calls/get-pokemon-list-from-api'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import PokemonCard from '../commons/PokemonCard.vue'
 import ButtonComponent from '../generic-components/ButtonComponent.vue'
 import { decrementNumberWithinRange } from '@/helpers/decrement-number-within-range'
 import { incrementNumberWithinRange } from '@/helpers/increment-number-within-range'
+import { useRoute } from 'vue-router'
 
-const offset = ref(0)
+const route = useRoute()
+
+const offset = ref(parseInt(route.query.offset))
+const previousLink = ref(`/list?offset=${decrementNumberWithinRange(offset.value, 10, 0)}`)
+const nextLink = ref(`/list?offset=${incrementNumberWithinRange(offset.value, 10, 1020)}`)
+
 const pokemonList = ref([])
 const showLinkCards = true
 
@@ -16,14 +22,22 @@ const getPokemonList = async (offset) => {
   setPokemonList(pokemons)
 }
 
-const onClickPrevious = () => {
-  offset.value = decrementNumberWithinRange(offset.value, 10, 0)
-  getPokemonList(offset.value)
-}
-const onClickNext = () => {
-  offset.value = incrementNumberWithinRange(offset.value, 10, 1020)
-  getPokemonList(offset.value)
-}
+const setPreviousLink = (offset) =>
+  (previousLink.value = `/list?offset=${decrementNumberWithinRange(offset, 10, 0)}`)
+const setNextLink = (offset) =>
+  (nextLink.value = `/list?offset=${incrementNumberWithinRange(offset, 10, 1020)}`)
+
+watch(
+  () => route.query.offset,
+  (newOffset) => {
+    const newOffsetInt = parseInt(newOffset)
+
+    offset.value = newOffsetInt
+    setPreviousLink(newOffsetInt)
+    setNextLink(newOffsetInt)
+    getPokemonList(newOffsetInt)
+  }
+)
 
 onMounted(() => getPokemonList(offset.value))
 </script>
@@ -32,10 +46,14 @@ onMounted(() => getPokemonList(offset.value))
   <v-container>
     <v-row align="center" justify="space-between">
       <v-col cols="auto">
-        <ButtonComponent v-if="offset > 0" @clicked="onClickPrevious" text="PREVIOUS" />
+        <RouterLink :to="previousLink">
+          <ButtonComponent v-if="offset > 0" text="PREVIOUS" />
+        </RouterLink>
       </v-col>
       <v-col cols="auto">
-        <ButtonComponent v-if="offset < 1020" @clicked="onClickNext" text="NEXT" />
+        <RouterLink :to="nextLink">
+          <ButtonComponent v-if="offset < 1020" text="NEXT" />
+        </RouterLink>
       </v-col>
     </v-row>
 

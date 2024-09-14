@@ -2,21 +2,31 @@
 import { ref, watch } from 'vue'
 import { usePokemonTeamStore } from '@/stores/pokemon-team'
 
-const tooltipText = ref('Add to my team')
 const emit = defineEmits(['clicked'])
-const triggerClickEvent = () => {
-  emit('clicked')
-
-  tooltipText.value = 'Ok!'
-  setTimeout(() => (tooltipText.value = 'Add to my team'), 1200)
-}
 
 const pokemonTeamStore = usePokemonTeamStore()
 const colorAddButton = ref(pokemonTeamStore.hasMaxPokemon ? '#f443364d' : 'red')
+const tooltipText = ref(pokemonTeamStore.hasMaxPokemon ? 'Team is full' : 'Add to my team')
+
+const triggerClickEvent = () => {
+  emit('clicked')
+
+  if (!pokemonTeamStore.hasMaxPokemon) tooltipText.value = 'Ok!'
+  setTimeout(() => {
+    if (pokemonTeamStore.hasMaxPokemon) {
+      tooltipText.value = 'Team is full'
+    } else {
+      tooltipText.value = 'Add to my team'
+    }
+  }, 1200)
+}
 
 watch(
   () => pokemonTeamStore.hasMaxPokemon,
-  (hasMaxPokemon) => (colorAddButton.value = hasMaxPokemon ? '#f443364d' : 'red')
+  (hasMaxPokemon) => {
+    colorAddButton.value = hasMaxPokemon ? '#f443364d' : 'red'
+    pokemonTeamStore.hasMaxPokemon ? 'Team is full' : 'Add to my team'
+  }
 )
 </script>
 

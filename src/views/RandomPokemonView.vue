@@ -1,5 +1,5 @@
 <script setup>
-import RandomPokemonComponent from '@/components/random-pokemon/RandomPokemonComponent.vue'
+import RandomPokemonComponent from '@/components/RandomPokemonComponent.vue'
 </script>
 
 <template>

@@ -1,11 +1,11 @@
 <script setup>
-import { getPokemonListFromApi } from '@/api-calls/get-pokemon-list-from-api'
 import { onMounted, ref, watch } from 'vue'
-import PokemonCard from '../commons/PokemonCard.vue'
-import ButtonComponent from '../generic-components/ButtonComponent.vue'
-import { decrementNumberWithinRange } from '@/helpers/decrement-number-within-range'
-import { incrementNumberWithinRange } from '@/helpers/increment-number-within-range'
 import { useRoute } from 'vue-router'
+import { getPokemonListFromApi } from '@/api-calls/get-pokemon-list-from-api'
+import { decrementNumberWithinRange } from '@/utils/decrement-number-within-range'
+import { incrementNumberWithinRange } from '@/utils/increment-number-within-range'
+import ButtonComponent from './generic-components/ButtonComponent.vue'
+import PokemonCard from './commons/PokemonCard.vue'
 
 const route = useRoute()
 const url = '/list?offset='
@@ -15,7 +15,8 @@ const previousLink = ref(`${url}${decrementNumberWithinRange(offset.value, 10, 0
 const nextLink = ref(`${url}${incrementNumberWithinRange(offset.value, 10, 1020)}`)
 
 const pokemonList = ref([])
-const showLinkCards = true
+const showLinkInfos = true
+const showAddToTeam = true
 
 const setPokemonList = (newPokemonList) => (pokemonList.value = newPokemonList)
 const getPokemonList = async (offset) => {
@@ -61,7 +62,7 @@ onMounted(() => getPokemonList(offset.value))
     <v-row align="center" justify="center">
       <v-list theme="dark" lines="one" class="pkmList">
         <v-list-item v-for="pokemon in pokemonList" :key="pokemon.name" class="pkmItemList">
-          <PokemonCard :pokemon="pokemon" :showLink="showLinkCards" />
+          <PokemonCard :pokemon="pokemon" :showLinkInfos :showAddToTeam />
         </v-list-item>
       </v-list>
     </v-row>
@@ -72,7 +73,7 @@ onMounted(() => getPokemonList(offset.value))
 .pkmList {
   display: flex;
   flex-wrap: wrap;
-  max-width: 75%;
+  max-width: 95%;
   margin: 32px;
   justify-content: center;
 }

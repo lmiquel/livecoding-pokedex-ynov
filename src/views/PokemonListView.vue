@@ -1,5 +1,5 @@
 <script setup>
-import PokemonListComponent from '@/components/pokemon-list/PokemonListComponent.vue'
+import PokemonListComponent from '@/components/PokemonListComponent.vue'
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { capitalizeFirstLetter } from '@/helpers/capitalize-first-letter'
+import { capitalizeFirstLetter } from '@/utils/capitalize-first-letter'
 
 const props = defineProps({
   pokemonInfos: {

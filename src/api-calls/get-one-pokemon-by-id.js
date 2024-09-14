@@ -1,4 +1,7 @@
-import { getOnePokemonFormattedBasicData } from './helpers/format-pokemon-data-for-display'
+import {
+  getOnePokemonFormattedBasicData,
+  getOnePokemonFormattedDetailledData
+} from './helpers/format-pokemon-data-for-display'
 
 export const getOnePokemonById = async (pokemonId) => {
   const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
@@ -8,4 +11,9 @@ export const getOnePokemonById = async (pokemonId) => {
 export const getBasicDataPokemon = async (pokemonId) => {
   const pokemon = await getOnePokemonById(pokemonId)
   return getOnePokemonFormattedBasicData(pokemon)
+}
+
+export const getDetailledDataPokemon = async (pokemonId) => {
+  const pokemon = await getOnePokemonById(pokemonId)
+  return getOnePokemonFormattedDetailledData(pokemon)
 }

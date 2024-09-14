@@ -68,11 +68,7 @@ watch(
             />
           </template>
         </v-tooltip>
-        <v-tooltip
-          v-if="props.showRemoveFromTeam && pokemonTeamStore.hasMaxPokemon"
-          text="Remove from my team"
-          location="top"
-        >
+        <v-tooltip v-if="props.showRemoveFromTeam" text="Remove from my team" location="top">
           <template v-slot:activator="{ props }">
             <v-icon
               @click="removeThisPokemonFromTeam"

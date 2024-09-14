@@ -9,6 +9,11 @@ const links = [
     name: 'Pokemon list',
     link: '/list?offset=0',
     icon: 'mdi-format-list-bulleted'
+  },
+  {
+    name: 'My Pokemon team',
+    link: '/team',
+    icon: 'mdi-pokemon-go'
   }
 ]
 </script>

@@ -1,5 +1,5 @@
-import RandomPokemonView from '@/views/RandomPokemonView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import RandomPokemonView from '@/views/RandomPokemonView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +22,11 @@ const router = createRouter({
       name: 'pokemonList',
       component: () => import('../views/PokemonListView.vue'),
       props: (route) => ({ query: route.query.offset })
+    },
+    {
+      path: '/team',
+      name: 'pokemonTeam',
+      component: () => import('../views/PokemonTeamView.vue')
     }
   ]
 })

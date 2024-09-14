@@ -1,6 +1,9 @@
 <script setup>
-import { capitalizeFirstLetter } from '@/helpers/capitalize-first-letter'
-import { ref, watch } from 'vue'
+import { usePokemonTeamStore } from '@/stores/pokemon-team'
+import { capitalizeFirstLetter } from '@/utils/capitalize-first-letter'
+import ShowLinkButton from './pokemon-card-components/ShowLinkButton.vue'
+import AddPokemonToTeamButton from './pokemon-card-components/AddPokemonToTeamButton.vue'
+import RemovePokemonFromTeamButton from './pokemon-card-components/RemovePokemonFromTeamButton.vue'
 
 const props = defineProps({
   pokemon: {
@@ -9,18 +12,18 @@ const props = defineProps({
     img: String,
     sound: String
   },
-  showLink: Boolean
+  showLinkInfos: Boolean,
+  showAddToTeam: Boolean,
+  showRemoveFromTeam: Boolean
 })
 
-const pokemonUrl = ref(`/pokemon/${props.pokemon.id || null}`)
-
-// for the random pokemon view
-watch(
-  () => props.pokemon.id,
-  (newPokemonId) => {
-    pokemonUrl.value = `/pokemon/${newPokemonId}`
-  }
-)
+const pokemonTeamStore = usePokemonTeamStore()
+const addThisPokemonToTeam = () => {
+  pokemonTeamStore.addPokemonToTeam(props.pokemon)
+}
+const removeThisPokemonFromTeam = () => {
+  pokemonTeamStore.removePokemonFromTeam(props.pokemon)
+}
 </script>
 
 <template>
@@ -29,13 +32,14 @@ watch(
 
     <v-card-title class="titleCardBox">
       {{ capitalizeFirstLetter(props.pokemon.name) }}
-      <v-tooltip v-if="props.showLink" text="More infos">
-        <template v-slot:activator="{ props }">
-          <RouterLink :to="pokemonUrl">
-            <v-icon v-bind="props" icon="mdi-plus-box" />
-          </RouterLink>
-        </template>
-      </v-tooltip>
+      <div>
+        <ShowLinkButton v-if="props.showLinkInfos" :id="pokemon.id" />
+        <AddPokemonToTeamButton v-if="props.showAddToTeam" @clicked="addThisPokemonToTeam" />
+        <RemovePokemonFromTeamButton
+          v-if="props.showRemoveFromTeam"
+          @clicked="removeThisPokemonFromTeam"
+        />
+      </div>
     </v-card-title>
 
     <v-spacer />

@@ -1,7 +1,7 @@
 <script setup>
-import PokemonInfosView from '@/components/pokemon-infos/PokemonInfosView.vue'
+import PokemonInfosComponent from '@/components/PokemonInfosComponent.vue'
 </script>
 
 <template>
-  <PokemonInfosView />
+  <PokemonInfosComponent />
 </template>

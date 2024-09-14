@@ -1,13 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import PokemonCard from '../commons/PokemonCard.vue'
 import { getOnePokemonById } from '@/api-calls/get-one-pokemon-by-id'
-import PokemonDetailledInfosCard from '../commons/PokemonDetailledInfosCard.vue'
 import {
   getOnePokemonFormattedBasicData,
   getOnePokemonFormattedDetailledData
 } from '@/api-calls/helpers/format-pokemon-data-for-display'
+import PokemonFullData from './commons/PokemonFullData.vue'
 
 const route = useRoute()
 
@@ -17,7 +16,6 @@ const pokemonCardInfos = ref({
   img: '',
   sound: ''
 })
-const showLinkcard = false
 
 const pokemonDetailledInfos = ref({
   id: null,
@@ -25,6 +23,8 @@ const pokemonDetailledInfos = ref({
   types: [],
   stats: []
 })
+
+const showAddToTeam = true
 
 const setPokemonCardInfos = async (pokemon) =>
   (pokemonCardInfos.value = getOnePokemonFormattedBasicData(pokemon))
@@ -41,16 +41,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-container>
-    <v-row align="center" justify="center">
-      <v-col cols="auto">
-        <PokemonCard :pokemon="pokemonCardInfos" :showLink="showLinkcard" />
-      </v-col>
-      <v-col cols="auto">
-        <PokemonDetailledInfosCard :pokemonInfos="pokemonDetailledInfos" />
-      </v-col>
-    </v-row>
-  </v-container>
+  <PokemonFullData
+    :pokemon="pokemonCardInfos"
+    :pokemonInfos="pokemonDetailledInfos"
+    :showAddToTeam
+  />
 </template>
-
-<style></style>

@@ -19,4 +19,6 @@ export const usePokemonTeamStore = defineStore('pokemonTeam', () => {
   }
 
   return { team, hasMaxPokemon, addPokemonToTeam, removePokemonFromTeam }
+}, {
+  persist: true,
 })

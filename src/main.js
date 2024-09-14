@@ -6,6 +6,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createVuetify } from 'vuetify'
 
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
@@ -17,8 +18,10 @@ const vuetify = createVuetify({
   components,
   directives
 })
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(vuetify)
 

@@ -1,7 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue'
 import { usePokemonTeamStore } from '@/stores/pokemon-team'
 import { capitalizeFirstLetter } from '@/utils/capitalize-first-letter'
+import ShowLinkButton from './pokemon-card-components/ShowLinkButton.vue'
+import AddPokemonToTeamButton from './pokemon-card-components/AddPokemonToTeamButton.vue'
+import RemovePokemonFromTeamButton from './pokemon-card-components/RemovePokemonFromTeamButton.vue'
 
 const props = defineProps({
   pokemon: {
@@ -16,31 +18,12 @@ const props = defineProps({
 })
 
 const pokemonTeamStore = usePokemonTeamStore()
-
-const colorAddButton = ref(pokemonTeamStore.hasMaxPokemon ? '#f443364d' : 'red')
-
 const addThisPokemonToTeam = () => {
   pokemonTeamStore.addPokemonToTeam(props.pokemon)
 }
 const removeThisPokemonFromTeam = () => {
   pokemonTeamStore.removePokemonFromTeam(props.pokemon)
 }
-
-const pokemonUrl = ref(`/pokemon/${props.pokemon.id || null}`)
-
-// for the random pokemon view
-watch(
-  () => props.pokemon.id,
-  (newPokemonId) => {
-    pokemonUrl.value = `/pokemon/${newPokemonId}`
-    colorAddButton.value = pokemonTeamStore.hasMaxPokemon ? '#f443364d' : 'red'
-  }
-)
-
-watch(
-  () => pokemonTeamStore.hasMaxPokemon,
-  (hasMaxPokemon) => (colorAddButton.value = hasMaxPokemon ? '#f443364d' : 'red')
-)
 </script>
 
 <template>
@@ -50,35 +33,12 @@ watch(
     <v-card-title class="titleCardBox">
       {{ capitalizeFirstLetter(props.pokemon.name) }}
       <div>
-        <v-tooltip v-if="props.showLinkInfos" text="More infos" location="top">
-          <template v-slot:activator="{ props }">
-            <RouterLink :to="pokemonUrl">
-              <v-icon v-bind="props" icon="mdi-information-box" />
-            </RouterLink>
-          </template>
-        </v-tooltip>
-        <v-tooltip v-if="props.showAddToTeam" text="Add to my team" location="top">
-          <template v-slot:activator="{ props }">
-            <v-icon
-              @click="addThisPokemonToTeam"
-              :color="colorAddButton"
-              class="cursorPointer"
-              v-bind="props"
-              icon="mdi-plus-box"
-            />
-          </template>
-        </v-tooltip>
-        <v-tooltip v-if="props.showRemoveFromTeam" text="Remove from my team" location="top">
-          <template v-slot:activator="{ props }">
-            <v-icon
-              @click="removeThisPokemonFromTeam"
-              color="red"
-              class="cursorPointer"
-              v-bind="props"
-              icon="mdi-minus-box"
-            />
-          </template>
-        </v-tooltip>
+        <ShowLinkButton v-if="props.showLinkInfos" :id="pokemon.id" />
+        <AddPokemonToTeamButton v-if="props.showAddToTeam" @clicked="addThisPokemonToTeam" />
+        <RemovePokemonFromTeamButton
+          v-if="props.showRemoveFromTeam"
+          @clicked="removeThisPokemonFromTeam"
+        />
       </div>
     </v-card-title>
 
@@ -95,9 +55,5 @@ watch(
 .titleCardBox {
   display: flex;
   justify-content: space-between;
-}
-
-.cursorPointer:hover {
-  cursor: pointer;
 }
 </style>

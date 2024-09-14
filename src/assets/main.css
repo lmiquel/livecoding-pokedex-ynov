@@ -23,6 +23,22 @@ main {
   justify-content: center !important;
 }
 
+.cursorPointer:hover {
+  cursor: pointer;
+}
+
+.pkmList {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 95%;
+  margin: 32px;
+  justify-content: center;
+}
+
+.pkmItemList {
+  margin: auto;
+}
+
 @media (hover: hover) {
   a:hover {
     text-decoration: underline;

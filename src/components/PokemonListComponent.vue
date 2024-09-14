@@ -68,17 +68,3 @@ onMounted(() => getPokemonList(offset.value))
     </v-row>
   </v-container>
 </template>
-
-<style>
-.pkmList {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 95%;
-  margin: 32px;
-  justify-content: center;
-}
-
-.pkmItemList {
-  margin: auto;
-}
-</style>

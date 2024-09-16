@@ -1,33 +1,35 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getPokemonListFromApi } from '@/api-calls/get-pokemon-list-from-api'
-import { decrementNumberWithinRange } from '@/utils/decrement-number-within-range'
-import { incrementNumberWithinRange } from '@/utils/increment-number-within-range'
-import ButtonComponent from './generic-components/ButtonComponent.vue'
 import PokemonCard from './commons/PokemonCard.vue'
 
 const route = useRoute()
-const url = '/list?offset='
+const router = useRouter()
 
 const offset = ref(parseInt(route.query.offset))
-const previousLink = ref(`${url}${decrementNumberWithinRange(offset.value, 10, 0)}`)
-const nextLink = ref(`${url}${incrementNumberWithinRange(offset.value, 10, 1020)}`)
-
 const pokemonList = ref([])
-const showLinkInfos = true
-const showAddToTeam = true
+const isLoading = ref(false)
 
 const setPokemonList = (newPokemonList) => (pokemonList.value = newPokemonList)
 const getPokemonList = async (offset) => {
+  isLoading.value = !isLoading.value
   const pokemons = await getPokemonListFromApi(offset)
   setPokemonList(pokemons)
+  isLoading.value = !isLoading.value
+
 }
 
-const setPreviousLink = (offset) =>
-  (previousLink.value = `${url}${decrementNumberWithinRange(offset, 10, 0)}`)
-const setNextLink = (offset) =>
-  (nextLink.value = `${url}${incrementNumberWithinRange(offset, 10, 1020)}`)
+const currentPage = ref(1)
+const pagesLength = Math.ceil(1025 / 10)
+
+const updatePage = (pageIndex) => {
+  router.push({ path: 'list', query: { offset: (pageIndex - 1) * 10 } })
+  currentPage.value = pageIndex;
+}
+
+const showLinkInfos = true
+const showAddToTeam = true
 
 watch(
   () => route.query.offset,
@@ -35,34 +37,25 @@ watch(
     const newOffsetInt = parseInt(newOffset)
 
     offset.value = newOffsetInt
-    setPreviousLink(newOffsetInt)
-    setNextLink(newOffsetInt)
     getPokemonList(newOffsetInt)
   }
 )
 
-onMounted(() => getPokemonList(offset.value))
+onMounted(() => {
+  updatePage(currentPage.value);
+  getPokemonList(offset.value)
+})
 </script>
 
 <template>
   <v-container>
-    <v-row align="center" justify="space-between">
-      <v-col cols="auto">
-        <RouterLink :to="previousLink">
-          <ButtonComponent v-if="offset > 0" text="PREVIOUS" />
-        </RouterLink>
-      </v-col>
-      <v-col cols="auto">
-        <RouterLink :to="nextLink">
-          <ButtonComponent v-if="offset < 1020" text="NEXT" />
-        </RouterLink>
-      </v-col>
-    </v-row>
+    <v-pagination v-model="currentPage" :length="pagesLength" @update:model-value="updatePage" />
 
     <v-row align="center" justify="center">
       <v-list theme="dark" lines="one" class="pkmList">
         <v-list-item v-for="pokemon in pokemonList" :key="pokemon.name" class="pkmItemList">
-          <PokemonCard :pokemon="pokemon" :showLinkInfos :showAddToTeam />
+          <v-skeleton-loader v-if="isLoading" type="card" style="height: 500px; width: 350px;" />
+          <PokemonCard v-else :pokemon="pokemon" :showLinkInfos :showAddToTeam />
         </v-list-item>
       </v-list>
     </v-row>

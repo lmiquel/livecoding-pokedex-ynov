@@ -11,23 +11,28 @@ const pokemon = ref({
   img: '',
   sound: ''
 })
-const showLinkInfos = true
-const showAddToTeam = true
+const isLoading = ref(false)
 
 const setRandomPokemon = (randomPokemon) => (pokemon.value = randomPokemon)
 const getRandomPokemon = async () => {
+  isLoading.value = !isLoading.value
   const randomPokemonNumber = getRandomPokemonNumber()
   const randomPokemon = await getBasicDataPokemon(randomPokemonNumber)
 
   setRandomPokemon(randomPokemon)
+  isLoading.value = !isLoading.value
 }
+
+const showLinkInfos = true
+const showAddToTeam = true
 
 onMounted(() => getRandomPokemon())
 </script>
 
 <template>
   <v-container>
-    <PokemonCard :pokemon="pokemon" :showLinkInfos :showAddToTeam />
+    <v-skeleton-loader v-if="isLoading" type="card" style="height: 500px; width: 350px;" />
+    <PokemonCard v-else :pokemon="pokemon" :showLinkInfos :showAddToTeam />
     <ButtonComponent @clicked="getRandomPokemon" text="CHANGE POKEMON" />
   </v-container>
 </template>

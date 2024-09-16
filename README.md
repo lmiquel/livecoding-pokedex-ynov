@@ -1,7 +1,10 @@
 # livecoding-pokedex-ynov
 
-This is actually not a livecoding but the app I did to prepare the livecoding;
-I struggled a bit to get the github pages deploy to work but yay it works
+This is actually not a livecoding but the app I did to prepare the livecoding \
+I struggled a bit to deploy it but yay it works
+
+## App is deployed here
+https://livecoding-pokedex-ynov.web.app/
 
 ## Project Setup
 

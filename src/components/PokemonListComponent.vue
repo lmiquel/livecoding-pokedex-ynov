@@ -12,12 +12,14 @@ const pokemonList = ref([])
 const isLoading = ref(false)
 
 const setPokemonList = (newPokemonList) => (pokemonList.value = newPokemonList)
-const getPokemonList = async (offset) => {
-  isLoading.value = !isLoading.value
-  const pokemons = await getPokemonListFromApi(offset)
-  setPokemonList(pokemons)
+const getPokemonList = async (offset) => await getPokemonListFromApi(offset)
+const updatePokemonList = async (offset) => {
   isLoading.value = !isLoading.value
 
+  const pokemonList = await getPokemonList(offset)
+  setPokemonList(pokemonList)
+
+  isLoading.value = !isLoading.value
 }
 
 const currentPage = ref(1)
@@ -35,15 +37,18 @@ watch(
   () => route.query.offset,
   (newOffset) => {
     const newOffsetInt = parseInt(newOffset)
-
     offset.value = newOffsetInt
-    getPokemonList(newOffsetInt)
+    const newCurrentPage = (newOffsetInt/10) + 1
+    currentPage.value = newCurrentPage
+    
+    updatePage(newCurrentPage)
+    updatePokemonList(newOffsetInt)
   }
 )
 
 onMounted(() => {
-  updatePage(currentPage.value);
-  getPokemonList(offset.value)
+  updatePage(currentPage.value)
+  updatePokemonList(offset.value)
 })
 </script>
 

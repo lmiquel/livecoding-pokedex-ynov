@@ -4,6 +4,7 @@ import { getDetailledDataPokemon } from '@/api-calls/get-one-pokemon-by-id'
 
 export const usePokemonTeamStore = defineStore('pokemonTeam', () => {
   const team = ref([])
+  const hasPokemon = computed(() => team.value.length)
   const hasMaxPokemon = computed(() => team.value.length === 6)
 
   const addPokemonToTeam = (pokemon) => {
@@ -17,8 +18,11 @@ export const usePokemonTeamStore = defineStore('pokemonTeam', () => {
     const index = team.value.indexOf(pokemonToRemove)
     if (index > -1) team.value.splice(index, 1)
   }
+  const removeAllPokemonFromTeam = () => {
+    team.value = []
+  }
 
-  return { team, hasMaxPokemon, addPokemonToTeam, removePokemonFromTeam }
+  return { team, hasPokemon, hasMaxPokemon, addPokemonToTeam, removePokemonFromTeam, removeAllPokemonFromTeam }
 }, {
   persist: true,
 })

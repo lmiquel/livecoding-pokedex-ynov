@@ -1,12 +1,11 @@
-import axios from 'axios'
 import {
   getOnePokemonFormattedBasicData,
   getOnePokemonFormattedDetailledData
 } from './helpers/format-pokemon-data-for-display'
 
 export const getOnePokemonById = async (pokemonId) => {
-  const pokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
-  return pokemon.data
+  const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+  return await pokemon.json()
 }
 
 export const getBasicDataPokemon = async (pokemonId) => {
